@@ -26,7 +26,7 @@ export OPENAI_API_KEY=Keyとして共有された文字列
 python3 ./openai_api_test_tiny.py
 ```
 
-`Success! Response dumped into c.`のようなメッセージが表示される
+`Success! Response dumped into responses/20241113_175704.884569_2bfebed8-0803-4d66-91b9-3e148f14b5b5.pkl.`のようなメッセージが表示される
 
 #### 結果の確認
 ファイル名は適宜変更
