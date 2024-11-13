@@ -40,7 +40,7 @@ def main():
     with open(f"{args.dir}/{_id}.pkl", 'wb') as wf:
         pickle.dump(response, wf)
 
-    print ("Success! Response dumped into {}.pkl.".format(_id))
+    print (f"Success! Response dumped into {args.dir}/{_id}.pkl.")
 
 
 if __name__ == "__main__":
