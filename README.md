@@ -16,7 +16,7 @@ pip3 install openai
 ```
 
 #### OpenAI API Keyの設定
-API Keyは教員にリクエストしてもらってください
+API Keyは教員にリクエストして取得してください
 ```
 export OPENAI_API_KEY=Keyとして共有された文字列
 ```
