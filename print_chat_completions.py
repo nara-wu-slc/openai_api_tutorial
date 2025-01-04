@@ -14,8 +14,8 @@ def main():
     argparser.add_argument("file", type=str, help="chat completion log in *.pkl")
     args = argparser.parse_args()
 
-    with open(args.file, 'rb') as wf:
-        DATA = pickle.load(wf)
+    with open(args.file, 'rb') as rh:
+        DATA = pickle.load(rh)
         print (DATA.choices[0].message.content)
 
 
