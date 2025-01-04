@@ -169,7 +169,7 @@ else
   name=`basename ${TEMPLATE} .gpt`
   for f in input/*.txt ; do
     base=`basename ${f} .txt`
-    python3 run_chat_completion.py -u ${TEMPLATE} -a ${f} -d output/${name} -o ${base}
+    python3 run_chat_completions.py -u ${TEMPLATE} -a ${f} -d output/${name} -o ${base}
   done
 fi
 ```
