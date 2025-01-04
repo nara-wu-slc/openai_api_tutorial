@@ -166,7 +166,7 @@ elif test -z "${TEMPLATE}" ; then
 elif test ! -s "${TEMPLATE}"; then
   echo "ERROR: the template ${TEMPLATE} is not found"
 else
-  name=`basename ${TEMPLATE} .gpt`
+  name=`basename ${TEMPLATE} .txt`
   for f in input/*.txt ; do
     base=`basename ${f} .txt`
     python3 run_chat_completions.py -u ${TEMPLATE} -a ${f} -d output/${name} -o ${base}
