@@ -1,6 +1,11 @@
 # openai_api_tutorial
 OpenAIのAPIを使ってGPT-4等のモデルを自作プログラムから利用する
 
+## 目次
+- [共通の事前作業](#共通の事前作業)
+- [基本形：自分でプログラムを書く場合の参考](#基本形自分でプログラムを書く場合の参考)
+- [応用形1：プロンプトをコマンドラインオプションやファイルで与える](#応用形1プロンプトをコマンドラインオプションやファイルで与える)
+
 ## 共通の事前作業
 #### 作業ディレクトリの作成
 `/path/to/dir`は適当なディレクトリ名に読み替える（`/slc/work/ユーザ名` 以下を推奨）
@@ -41,7 +46,7 @@ python3 ./pickle_print.py responses/20241113_175704.884569_2bfebed8-0803-4d66-91
 ChatCompletion(id='chatcmpl-AT3TNgZlq9KSHUmc8X5eb8ryct4H2', choices=[Choice(finish_reason='stop', index=0, logprobs=None, message=ChatCompletionMessage(content='My name is Nakano. I have been living near Nakano Station for fifteen years.', refusal=None, role='assistant', audio=None, function_call=None, tool_calls=None))], created=1731488225, model='gpt-4o-mini-2024-07-18', object='chat.completion', service_tier=None, system_fingerprint='fp_0ba0d124f1', usage=CompletionUsage(completion_tokens=18, prompt_tokens=58, total_tokens=76, completion_tokens_details=CompletionTokensDetails(accepted_prediction_tokens=0, audio_tokens=0, reasoning_tokens=0, rejected_prediction_tokens=0), prompt_tokens_details=PromptTokensDetails(audio_tokens=0, cached_tokens=0)))
 ```
 
-## 応用形：プロンプトをコマンドラインオプションやファイルで与える
+## 応用形1：プロンプトをコマンドラインオプションやファイルで与える
 #### コマンドの内容詳細
 ```
 python3 run_chat_completion.py -h
@@ -110,4 +115,72 @@ Certainly! Here are some useful tips for using the OpenAI API effectively:
 15. **Community and Support**: Utilize community forums, documentation, and OpenAI’s support for troubleshooting and sharing best practices with other developers.
 
 By following these tips, you can enhance your experience with the OpenAI API and leverage its capabilities effectively for your projects.
+```
+
+## 応用形2：さらにプロンプトにファイルの内容を追記する
+ここでは、[gptscriptのチュートリアル](https://github.com/nara-wu-slc/gptscript-tutorial/)と同様に別のファイルの内容を読み込んでプロンプトに含めることを考えます。
+gptscriptはファイルの読み書きをする機構を持っていますが、Chat Completion API自体にはそういう機能はないようなので、プロンプトの中身にファイルの内容を書き込むために、
+- プロンプトのうち指示を記載したテンプレートファイル（1個）
+- プロンプトの末尾に追加するデータ部分を記載した入力ファイル群（たくさん、テキスト形式）
+
+を利用します。
+
+
+### プロンプトのテンプレートを用意する
+例えばテキストの要約をしたいとしたとき、以下のようなファイルを `prompt_template.txt` という名前で作ります（拡張子は任意）。
+```
+You are a helpful text analyst.
+Please read the Japanese text and summarize it, following the guidelines below.
+
+Guidelines:
+- Please keep the original expressions as much as possible.
+- Please do not put newline symbols inside the output.
+- Please do not include any messages other than output summarizations.
+```
+>[!TIP]
+>Chat Completion APIを使うと応答メッセージが出力に含まれてしまうことがあるので、指定した内容以外を出力しないように具体的に指示を与えることが望ましいです（例：上記プロンプトの最後の行）
+
+### データとして読み込ませるテキストファイルを用意する
+`input/*.txt` に入力ファイル群が存在するとします（異なる場合は適宜実行時のコマンドを書き換えてください）。
+
+### API Keyを設定する
+```
+export OPENAI_API_KEY=...
+```
+API Keyの値には自分のAPI Keyを入れてください。
+
+### テンプレートと入力ファイルを読み込んで Chat Completion API を利用する
+まず最初にプロンプトテンプレートのファイル名を指定します。
+相対パスでも絶対パスでもかまいません。
+```
+TEMPLATE=prompt_template.txt
+```
+
+続いて、以下のコマンドを実行します（コピペで動きます）。
+出力はプロンプトによって異なるはずなので、プロンプトテンプレートのファイル名を利用して出力ディレクトリ名を指定するようにします (`output/prompt_template`)。
+```
+if test -z "${OPENAI_API_KEY}" ; then
+  echo "ERROR: the environmental variable OPENAI_API_KEY is empty"
+elif test -z "${TEMPLATE}" ; then
+  echo "ERROR: the variable TEMPLATE is empty"
+elif test ! -s "${TEMPLATE}"; then
+  echo "ERROR: the template ${TEMPLATE} is not found"
+else
+  name=`basename ${TEMPLATE} .gpt`
+  for f in input/*.txt ; do
+    base=`basename ${f} .txt`
+    python3 run_chat_completion.py -u ${TEMPLATE} -a ${f} -d output/${name} -o ${base}
+  done
+fi
+```
+
+>[!NOTE]
+>出力は python のバイナリ形式 (`*.pkl`) で保存されます。
+
+### pickle形式の出力をテキスト形式に変換する
+バイナリ形式を以下のコマンドでテキスト形式に変換します。
+```
+for f in output/${name}/*.pkl ; do
+  python3 print_chat_completion.py ${f} > `dirname ${f}`/`basename ${f} .pkl`.txt
+done
 ```
