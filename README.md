@@ -1,6 +1,11 @@
 # openai_api_tutorial
 OpenAIのAPIを使ってGPT-4等のモデルを自作プログラムから利用する
 
+## 目次
+- [共通の事前作業](#共通の事前作業)
+- [基本形：自分でプログラムを書く場合の参考](#基本形自分でプログラムを書く場合の参考)
+- [応用形1：プロンプトをコマンドラインオプションやファイルで与える](#応用形1プロンプトをコマンドラインオプションやファイルで与える)
+
 ## 共通の事前作業
 #### 作業ディレクトリの作成
 `/path/to/dir`は適当なディレクトリ名に読み替える（`/slc/work/ユーザ名` 以下を推奨）
@@ -41,7 +46,7 @@ python3 ./pickle_print.py responses/20241113_175704.884569_2bfebed8-0803-4d66-91
 ChatCompletion(id='chatcmpl-AT3TNgZlq9KSHUmc8X5eb8ryct4H2', choices=[Choice(finish_reason='stop', index=0, logprobs=None, message=ChatCompletionMessage(content='My name is Nakano. I have been living near Nakano Station for fifteen years.', refusal=None, role='assistant', audio=None, function_call=None, tool_calls=None))], created=1731488225, model='gpt-4o-mini-2024-07-18', object='chat.completion', service_tier=None, system_fingerprint='fp_0ba0d124f1', usage=CompletionUsage(completion_tokens=18, prompt_tokens=58, total_tokens=76, completion_tokens_details=CompletionTokensDetails(accepted_prediction_tokens=0, audio_tokens=0, reasoning_tokens=0, rejected_prediction_tokens=0), prompt_tokens_details=PromptTokensDetails(audio_tokens=0, cached_tokens=0)))
 ```
 
-## 応用形：プロンプトをコマンドラインオプションやファイルで与える
+## 応用形1：プロンプトをコマンドラインオプションやファイルで与える
 #### コマンドの内容詳細
 ```
 python3 run_chat_completion.py -h
@@ -111,3 +116,5 @@ Certainly! Here are some useful tips for using the OpenAI API effectively:
 
 By following these tips, you can enhance your experience with the OpenAI API and leverage its capabilities effectively for your projects.
 ```
+
+## 応用形2：プロンプトに
