@@ -49,7 +49,7 @@ ChatCompletion(id='chatcmpl-AT3TNgZlq9KSHUmc8X5eb8ryct4H2', choices=[Choice(fini
 ## 応用形1：プロンプトをコマンドラインオプションやファイルで与える
 #### コマンドの内容詳細
 ```
-python3 run_chat_completion.py -h
+python3 run_chat_completions.py -h
 ```
 でヘルプメッセージが表示される。
 - `-v` または `--verbose`: デバッグメッセージを表示
@@ -64,7 +64,7 @@ python3 run_chat_completion.py -h
 #### 実行コマンド
 サンプルコマンドを走らせてみる
 ```
-python3 run_chat_completion.py -o sample
+python3 run_chat_completions.py -o sample
 ```
 正常終了すると
 ```
@@ -75,7 +75,7 @@ Success! Response dumped into responses/sample.pkl.
 #### 出力コマンド
 pickle形式で保存された応答結果からテキスト部分を取り出す
 ```
-python3 print_chat_completion.py responses/sample.pkl
+python3 print_chat_completions.py responses/sample.pkl
 ```
 
 実行すると以下のように表示される
@@ -181,6 +181,6 @@ fi
 バイナリ形式を以下のコマンドでテキスト形式に変換します。
 ```
 for f in output/${name}/*.pkl ; do
-  python3 print_chat_completion.py ${f} > `dirname ${f}`/`basename ${f} .pkl`.txt
+  python3 print_chat_completions.py ${f} > `dirname ${f}`/`basename ${f} .pkl`.txt
 done
 ```
